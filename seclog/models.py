@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
-from typing import Dict
 
 
 class Severity(str, Enum):
@@ -22,10 +21,9 @@ class Event:
 
 @dataclass
 class Finding:
-    rule: str
+    detector: str
     timestamp_first: datetime
     timestamp_last: datetime
     src_ip: str
     summary: str
-    details: Dict
-    severity: Severity
+    details: dict

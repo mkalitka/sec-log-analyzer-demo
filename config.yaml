@@ -1,0 +1,22 @@
+brute_force:
+  enabled: true
+  threshold: 3
+  window_seconds: 10
+
+port_scan:
+  enabled: true
+  threshold: 3
+  window_seconds: 10
+
+sql_injection:
+  enabled: true
+
+unusual_access:
+  enabled: true
+  sensitive_paths:
+    - /etc/passwd
+    - /var/log/auth.log
+    - /root/.bashrc
+    - /admin/panel
+  trusted_ips:
+    - 127.0.0.1

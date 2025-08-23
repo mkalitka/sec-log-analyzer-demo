@@ -1,5 +1,6 @@
 import re
-from ..models import Event, Finding, Severity
+
+from ..models import Event, Finding
 from .abstract import AbstractDetector
 
 SQLI_RE = re.compile(r"('|--|\bUNION\b|\bSELECT\b|\bOR\s+1=1\b)", re.IGNORECASE)
@@ -19,13 +20,12 @@ class SQLInjectionDetector(AbstractDetector):
     def flush(self):
         return [
             Finding(
-                rule=self.name,
+                detector=self.name,
                 timestamp_first=e.timestamp,
                 timestamp_last=e.timestamp,
                 src_ip=e.src_ip,
                 summary="Possible SQL injection pattern detected",
-                details={"payload": e.msg, "event_type": e.event_type},
-                severity=Severity.ERROR,
+                details={"raw": e.raw},
             )
             for e in self.matches
         ]

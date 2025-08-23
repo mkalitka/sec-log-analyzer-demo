@@ -1,12 +1,12 @@
 import json
+
 from ..models import Finding
 
 
-def to_json(findings):
+def to_json(findings: list[Finding]) -> str:
     def enc(f: Finding):
         return {
-            "rule": f.rule,
-            "severity": f.severity.value,
+            "detector": f.detector,
             "ts_first": f.timestamp_first.isoformat(),
             "ts_last": f.timestamp_last.isoformat(),
             "src_ip": f.src_ip,
@@ -14,4 +14,10 @@ def to_json(findings):
             "details": f.details,
         }
 
-    return json.dumps([enc(f) for f in findings], indent=2)
+    return json.dumps(
+        [
+            enc(f)
+            for f in sorted(findings, key=lambda x: (x.timestamp_first, x.detector))
+        ],
+        indent=2,
+    )

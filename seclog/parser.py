@@ -1,5 +1,6 @@
 import re
 from datetime import datetime
+
 from .models import Event, Severity
 
 LINE_RE = re.compile(
@@ -11,7 +12,7 @@ LINE_RE = re.compile(
 )
 
 
-def parse_line(line: str):
+def parse_line(line: str) -> Event | None:
     m = LINE_RE.match(line.strip())
     if not m:
         return None

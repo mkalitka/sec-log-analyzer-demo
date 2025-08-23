@@ -1,6 +1,5 @@
-from ..models import Event, Finding, Severity
+from ..models import Event, Finding
 from .abstract import AbstractDetector
-from typing import List
 
 
 class UnusualAccessDetector(AbstractDetector):
@@ -9,7 +8,7 @@ class UnusualAccessDetector(AbstractDetector):
     def __init__(self, sensitive_paths, trusted_ips):
         self.sensitive = sensitive_paths
         self.trusted_ips = trusted_ips
-        self.matches: List[Event] = []
+        self.matches: list[Event] = []
 
     def feed(self, e: Event):
         # include UNUSUAL_ACCESS event types or 403s on other sensitive paths
@@ -25,15 +24,12 @@ class UnusualAccessDetector(AbstractDetector):
     def flush(self):
         return [
             Finding(
-                rule=self.name,
+                detector=self.name,
                 timestamp_first=e.timestamp,
                 timestamp_last=e.timestamp,
                 src_ip=e.src_ip,
                 summary=f"Access to sensitive resource: {e.msg.split()[0]}",
                 details={"raw": e.raw},
-                severity=Severity.ERROR
-                if "UNUSUAL_ACCESS" in e.event_type
-                else Severity.WARNING,
             )
             for e in self.matches
         ]

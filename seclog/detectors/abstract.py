@@ -1,13 +1,17 @@
+from abc import ABC, abstractmethod
+
 from ..models import Event, Finding
 
 
-class AbstractDetector:
+class AbstractDetector(ABC):
     name: str = "abstract"
 
-    def feed(self, e: Event):
+    @abstractmethod
+    def feed(self, e: Event) -> None:
         """Stream one event into the rule."""
-        raise NotImplementedError
+        pass
 
+    @abstractmethod
     def flush(self) -> list[Finding]:
         """Return any buffered findings at the end."""
-        return []
+        pass
