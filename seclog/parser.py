@@ -28,7 +28,7 @@ def parse_line(line: str) -> Event | None:
 
 def parse_file(path: str):
     with open(path, "r", encoding="utf-8") as f:
-        for _, line in enumerate(f, 1):
+        for line in f:
             e = parse_line(line)
             if e:
                 yield e
