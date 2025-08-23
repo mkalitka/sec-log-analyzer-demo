@@ -7,6 +7,7 @@ from .parser import parse_file
 
 
 def main():
+    """Main function to run the security log analyzer."""
     ap = argparse.ArgumentParser(
         prog="seclog", description="Security log analyzer demo"
     )
@@ -16,8 +17,8 @@ def main():
     args = ap.parse_args()
 
     config = parse_config(args.config)
-    detectors = get_detectors(config)
     events = parse_file(args.logfile)
+    detectors = get_detectors(config)
     findings = run_detectors(events, detectors)
 
     if args.json:

@@ -12,40 +12,42 @@ __all__ = [
     "PortScanDetector",
     "SQLInjectionDetector",
     "UnusualAccessDetector",
+    "get_detectors",
+    "run_detectors",
 ]
 
 
 def get_detectors(config: dict) -> list:
-    brute = config["brute_force"]
-    portscan = config["port_scan"]
+    """Instantiate detectors based on provided configuration."""
+    bf = config["brute_force"]
+    ps = config["port_scan"]
     sqli = config["sql_injection"]
-    sensitive = config["unusual_access"]
+    ua = config["unusual_access"]
     return [
         BruteForceDetector(
-            threshold=brute.get("threshold"),
-            window_seconds=brute.get("window_seconds"),
+            threshold=bf.get("threshold"),
+            window_seconds=bf.get("window_seconds"),
         )
-        if brute.get("enabled")
+        if bf.get("enabled")
         else None,
         PortScanDetector(
-            threshold=portscan.get("threshold"),
-            window_seconds=portscan.get("window_seconds"),
+            threshold=ps.get("threshold"),
+            window_seconds=ps.get("window_seconds"),
         )
-        if portscan.get("enabled")
+        if ps.get("enabled")
         else None,
         SQLInjectionDetector() if sqli.get("enabled") else None,
         UnusualAccessDetector(
-            sensitive_paths=sensitive.get("sensitive_paths"),
-            trusted_ips=sensitive.get("trusted_ips"),
+            sensitive_paths=ua.get("sensitive_paths"),
+            trusted_ips=ua.get("trusted_ips"),
         )
-        if sensitive.get("enabled")
+        if ua.get("enabled")
         else None,
     ]
 
 
-def run_detectors(
-    events: Iterable[Event], detectors: Iterable[AbstractDetector]
-) -> list[Finding]:
+def run_detectors(events: Iterable[Event], detectors: Iterable[AbstractDetector]) -> list[Finding]:
+    """Run all detectors on the provided events and return findings."""
     detectors = [d for d in detectors if d is not None]
     for e in events:
         for d in detectors:

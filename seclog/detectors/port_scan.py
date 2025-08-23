@@ -14,7 +14,7 @@ class PortScanDetector(AbstractDetector):
         self.current_clusters: defaultdict[str, list[Event]] = defaultdict(list)
         self.final_clusters: defaultdict[str, list[list[Event]]] = defaultdict(list)
 
-    def feed(self, e: Event):
+    def feed(self, e: Event) -> None:
         if e.event_type != "PORT_SCAN_ATTEMPT":
             return
         ip = e.src_ip
@@ -23,8 +23,11 @@ class PortScanDetector(AbstractDetector):
             cluster.append(e)
         else:
             if (e.timestamp - cluster[-1].timestamp) <= self.window:
+                # If the event is within the time window to the last event,
+                # add it to the cluster.
                 cluster.append(e)
             else:
+                # Otherwise, finalize the cluster.
                 if len(cluster) >= self.threshold:
                     self.final_clusters[ip].append(cluster)
                 self.current_clusters[ip] = [e]

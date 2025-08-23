@@ -4,6 +4,8 @@ from ..models import Finding
 
 
 def to_json(findings: list[Finding]) -> str:
+    """Convert findings to a JSON string."""
+
     def enc(f: Finding):
         return {
             "detector": f.detector,
@@ -15,9 +17,10 @@ def to_json(findings: list[Finding]) -> str:
         }
 
     return json.dumps(
-        [
-            enc(f)
-            for f in sorted(findings, key=lambda x: (x.timestamp_first, x.detector))
-        ],
+        {
+            "findings": [
+                enc(f) for f in sorted(findings, key=lambda x: (x.timestamp_first, x.detector))
+            ]
+        },
         indent=2,
     )

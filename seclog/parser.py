@@ -1,4 +1,5 @@
 import re
+from collections.abc import Generator
 from datetime import datetime
 
 from .models import Event, Severity
@@ -13,6 +14,7 @@ LINE_RE = re.compile(
 
 
 def parse_line(line: str) -> Event | None:
+    """Parse a single line of the log file."""
     m = LINE_RE.match(line.strip())
     if not m:
         return None
@@ -26,7 +28,8 @@ def parse_line(line: str) -> Event | None:
     )
 
 
-def parse_file(path: str):
+def parse_file(path: str) -> Generator[Event, None, None]:
+    """Parse the entire log file line by line using parse_line."""
     with open(path, "r", encoding="utf-8") as f:
         for line in f:
             e = parse_line(line)

@@ -30,6 +30,7 @@ CONFIG_DEFAULTS = {
 
 
 def validate_config(config: dict) -> dict:
+    """Validate typing in the configuration dictionary."""
     bf = config["brute_force"]
     if not isinstance(bf["enabled"], bool):
         raise ValueError(
@@ -88,6 +89,7 @@ def validate_config(config: dict) -> dict:
 
 
 def parse_config(path: str | None = None) -> dict:
+    """Parse configuration from a YAML file and merge with defaults."""
     config = copy.deepcopy(CONFIG_DEFAULTS)
     if path is not None:
         with open(path, "r") as f:

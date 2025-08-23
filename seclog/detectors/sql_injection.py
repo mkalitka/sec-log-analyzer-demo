@@ -12,12 +12,12 @@ class SQLInjectionDetector(AbstractDetector):
     def __init__(self):
         self.matches: list[Event] = []
 
-    def feed(self, e: Event):
+    def feed(self, e: Event) -> None:
         if e.event_type != "SQL_INJECTION_ATTEMPT" and not SQLI_RE.search(e.msg):
             return
         self.matches.append(e)
 
-    def flush(self):
+    def flush(self) -> list[Finding]:
         return [
             Finding(
                 detector=self.name,

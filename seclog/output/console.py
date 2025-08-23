@@ -2,6 +2,7 @@ from ..models import Finding
 
 
 def to_table(findings: list[Finding]) -> str:
+    """Convert findings to a formatted table string."""
     if not findings:
         result = "No suspicious activity detected."
         return result

@@ -10,18 +10,16 @@ class UnusualAccessDetector(AbstractDetector):
         self.trusted_ips = trusted_ips
         self.matches: list[Event] = []
 
-    def feed(self, e: Event):
-        # include UNUSUAL_ACCESS event types or 403s on other sensitive paths
+    def feed(self, e: Event) -> None:
+        # Include UNUSUAL_ACCESS event types or 403s on other sensitive paths
         path = e.msg.split()[0] if e.msg else ""
         if e.event_type == "UNUSUAL_ACCESS" or (
-            e.event_type in {"GET", "POST"}
-            and path in self.sensitive
-            and "403" in e.msg
+            e.event_type in {"GET", "POST"} and path in self.sensitive and "403" in e.msg
         ):
             if e.src_ip not in self.trusted_ips:
                 self.matches.append(e)
 
-    def flush(self):
+    def flush(self) -> list[Finding]:
         return [
             Finding(
                 detector=self.name,
