@@ -74,7 +74,7 @@ def validate_config(config: dict) -> dict:
         and all(isinstance(x, str) for x in ua["sensitive_paths"])
     ):
         raise ValueError(
-            "'unusual_access' configuration 'sensitive_paths' has an invalid type. Expected list or set of strings."
+            "'unusual_access' configuration 'sensitive_paths' has an invalid type. Expected list or set of strings." # noqa: E501
         )
     if not (
         isinstance(ua["trusted_ips"], (list, set))

@@ -66,7 +66,7 @@ class BruteForceDetector(AbstractDetector):
             timestamp_first=cluster[0].timestamp,
             timestamp_last=cluster[-1].timestamp,
             src_ip=ip,
-            summary=f"{len(cluster)} failed logins within {int(self.window.total_seconds())}s threshold.",
+            summary=f"{len(cluster)} failed logins within {int(self.window.total_seconds())}s threshold.", # noqa: E501
             details={
                 "usernames": list(users),
                 "raw": raw,

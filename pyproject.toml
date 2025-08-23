@@ -1,5 +1,5 @@
 [project]
-name = "sec-log-analyzer-demo"
+name = "seclog"
 version = "0.1.0"
 description = "A simple security log analyzer"
 authors = [
@@ -19,6 +19,10 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.12.10"
+
+[tool.ruff]
+lint.select = ["E", "F", "I"]
+line-length = 100
 
 [tool.poetry.scripts]
 seclog = "seclog.__main__:main"
