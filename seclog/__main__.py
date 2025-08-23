@@ -2,12 +2,14 @@ import argparse
 
 from .config import parse_config
 from .detectors import get_detectors, run_detectors
+from .output import to_json, to_table
 from .parser import parse_file
-from .reporting import to_json, to_table
 
 
 def main():
-    ap = argparse.ArgumentParser(prog="seclog", description="Security log analyzer demo")
+    ap = argparse.ArgumentParser(
+        prog="seclog", description="Security log analyzer demo"
+    )
     ap.add_argument("logfile", help="Path to log file")
     ap.add_argument("--config", "-c", default=None, help="Path to YAML config")
     ap.add_argument("--json", action="store_true", help="Output JSON instead of table")

@@ -1,22 +1,22 @@
 brute_force:
   enabled: true
-  threshold: 3
-  window_seconds: 10
+  threshold: 3          # Number of failed attempts before triggering an alert
+  window_seconds: 10    # Time window for detection
 
 port_scan:
   enabled: true
-  threshold: 3
-  window_seconds: 10
+  threshold: 3          # Number of port scan attempts before triggering an alert
+  window_seconds: 10    # Time window for detection
 
 sql_injection:
   enabled: true
 
 unusual_access:
   enabled: true
-  sensitive_paths:
+  sensitive_paths:      # Paths to monitor
     - /etc/passwd
     - /var/log/auth.log
     - /root/.bashrc
     - /admin/panel
-  trusted_ips:
+  trusted_ips:         # IPs to exclude from detection
     - 127.0.0.1
