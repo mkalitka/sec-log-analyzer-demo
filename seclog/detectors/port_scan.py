@@ -11,14 +11,14 @@ class PortScanDetector(AbstractDetector):
     def __init__(self, threshold: int, window_seconds: int):
         self.threshold = threshold
         self.window = timedelta(seconds=window_seconds)
-        self.current_clusters: defaultdict[str, list[Event]] = defaultdict(list)
+        self.current_cluster: defaultdict[str, list[Event]] = defaultdict(list)
         self.final_clusters: defaultdict[str, list[list[Event]]] = defaultdict(list)
 
     def feed(self, e: Event) -> None:
         if e.event_type != "PORT_SCAN_ATTEMPT":
             return
         ip = e.src_ip
-        cluster = self.current_clusters[ip]
+        cluster = self.current_cluster[ip]
         if not cluster:
             cluster.append(e)
         else:
@@ -30,29 +30,19 @@ class PortScanDetector(AbstractDetector):
                 # Otherwise, finalize the cluster.
                 if len(cluster) >= self.threshold:
                     self.final_clusters[ip].append(cluster)
-                self.current_clusters[ip] = [e]
+                self.current_cluster[ip] = [e]
 
     def flush(self) -> list[Finding]:
         findings = []
         # Process finalized clusters
         for ip, clusters in self.final_clusters.items():
             for cluster in clusters:
-                if len(cluster) >= self.threshold:
-                    findings.append(self._create_finding(ip, cluster))
+                findings.append(self._create_finding(ip, cluster))
 
-        # Process current clusters and clean up empty ones
-        empty_ips = []
-        for ip, cluster in self.current_clusters.items():
+        # Process current cluster
+        for ip, cluster in self.current_cluster.items():
             if len(cluster) >= self.threshold:
                 findings.append(self._create_finding(ip, cluster))
-            elif len(cluster) == 0:
-                empty_ips.append(ip)
-
-        # Clean up empty clusters
-        for ip in empty_ips:
-            del self.current_clusters[ip]
-            if ip in self.final_clusters and not self.final_clusters[ip]:
-                del self.final_clusters[ip]
 
         return findings
 
