@@ -36,7 +36,7 @@ poetry install
 
 ## Configuration
 
-The analyzer can be configured using a YAML configuration file. Here's an example configuration:
+The analyzer can be configured using a YAML configuration file. Below is the default configuration:
 
 ```yaml
 brute_force:

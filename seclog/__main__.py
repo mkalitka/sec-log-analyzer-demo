@@ -8,9 +8,7 @@ from .parser import parse_file
 
 def main():
     """Main function to run the security log analyzer."""
-    ap = argparse.ArgumentParser(
-        prog="seclog", description="Security log analyzer demo"
-    )
+    ap = argparse.ArgumentParser(prog="seclog", description="Security log analyzer demo")
     ap.add_argument("logfile", help="Path to log file")
     ap.add_argument("--config", "-c", default=None, help="Path to YAML config")
     ap.add_argument("--json", action="store_true", help="Output JSON instead of table")

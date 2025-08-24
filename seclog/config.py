@@ -47,13 +47,9 @@ def validate_config(config: dict) -> dict:
 
     ps = config["port_scan"]
     if not isinstance(ps["enabled"], bool):
-        raise ValueError(
-            "'port_scan' configuration 'enabled' has an invalid type. Expected bool."
-        )
+        raise ValueError("'port_scan' configuration 'enabled' has an invalid type. Expected bool.")
     if not isinstance(ps["threshold"], int):
-        raise ValueError(
-            "'port_scan' configuration 'threshold' has an invalid type. Expected int."
-        )
+        raise ValueError("'port_scan' configuration 'threshold' has an invalid type. Expected int.")
     if not isinstance(ps["window_seconds"], int):
         raise ValueError(
             "'port_scan' configuration 'window_seconds' has an invalid type. Expected int."
@@ -99,4 +95,5 @@ def parse_config(path: str | None = None) -> dict:
         for key in config:
             if key in user_cfg and isinstance(user_cfg[key], dict):
                 config[key].update(user_cfg[key])
+    print(config)
     return validate_config(config)

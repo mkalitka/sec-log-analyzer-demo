@@ -24,10 +24,10 @@ class BruteForceDetector(AbstractDetector):
         else:
             if (e.timestamp - cluster[-1].timestamp) <= self.window:
                 # If the event is within the time window to the last event,
-                # add it to the IPs cluster.
+                # add it to the cluster.
                 cluster.append(e)
             else:
-                # Otherwise, finalize the IPs cluster.
+                # Otherwise, finalize the cluster.
                 if len(cluster) >= self.threshold:
                     self.final_clusters[ip].append(cluster)
                 self.current_clusters[ip] = [e]
@@ -69,7 +69,10 @@ class BruteForceDetector(AbstractDetector):
             timestamp_first=cluster[0].timestamp,
             timestamp_last=cluster[-1].timestamp,
             src_ip=ip,
-            summary=f"{len(cluster)} failed logins within {int(self.window.total_seconds())}s threshold.",  # noqa: E501
+            summary=(
+                f"{len(cluster)} failed logins within "
+                f"{int(self.window.total_seconds())}s threshold."
+            ),
             details={
                 "usernames": list(users),
                 "raw": raw,
