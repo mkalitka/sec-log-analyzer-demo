@@ -16,7 +16,7 @@ def make_event(ts, severity, src_ip, event_type, msg):
         src_ip=src_ip,
         event_type=event_type,
         msg=msg,
-        raw=(f"[{ts.strftime('%Y-%m-%d %H:%M:%S')}]{severity.value} {src_ip} {event_type} {msg}"),
+        raw=(f"[{ts.strftime('%Y-%m-%d %H:%M:%S')}] {severity.value} {src_ip} {event_type} {msg}"),
     )
 
 

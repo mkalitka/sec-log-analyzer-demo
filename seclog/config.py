@@ -18,13 +18,13 @@ CONFIG_DEFAULTS = {
     },
     "unusual_access": {
         "enabled": True,
-        "sensitive_paths": {
+        "sensitive_paths": [
             "/etc/passwd",
             "/var/log/auth.log",
             "/root/.bashrc",
             "/admin/panel",
-        },
-        "trusted_ips": {"127.0.0.1"},
+        ],
+        "trusted_ips": ["127.0.0.1"],
     },
 }
 
@@ -95,5 +95,4 @@ def parse_config(path: str | None = None) -> dict:
         for key in config:
             if key in user_cfg and isinstance(user_cfg[key], dict):
                 config[key].update(user_cfg[key])
-    print(config)
     return validate_config(config)

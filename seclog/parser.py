@@ -28,7 +28,7 @@ def parse_line(line: str) -> Event | None:
     )
 
 
-def parse_file(path: str) -> Generator[Event, None, None]:
+def parse_logfile(path: str) -> Generator[Event, None, None]:
     """Parse the entire log file line by line using parse_line."""
     with open(path, "r", encoding="utf-8") as f:
         for line in f:

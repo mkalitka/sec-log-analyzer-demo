@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from seclog.models import Severity
-from seclog.parser import parse_file, parse_line
+from seclog.parser import parse_line, parse_logfile
 
 
 def test_parse_line_valid():
@@ -21,13 +21,13 @@ def test_parse_line_invalid():
     assert parse_line("invalid line") is None
 
 
-def test_parse_file_reads_all(tmp_path):
+def test_parse_logfile(tmp_path):
     content = (
         "[2025-01-01 00:00:00] INFO 1.1.1.1 EVENT msg1\n"
         "[2025-01-01 00:00:01] ERROR 2.2.2.2 EVENT msg2\n"
     )
     p = tmp_path / "log.txt"
     p.write_text(content)
-    events = list(parse_file(str(p)))
+    events = list(parse_logfile(str(p)))
     assert len(events) == 2
     assert events[0].src_ip == "1.1.1.1"

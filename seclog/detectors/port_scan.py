@@ -56,7 +56,7 @@ class PortScanDetector(AbstractDetector):
                 port = int(e.msg.split("target=", 1)[1])
                 if port is not None:
                     ports.append(port)
-            except Exception:
+            except (IndexError, ValueError):
                 continue
         return Finding(
             detector=self.name,

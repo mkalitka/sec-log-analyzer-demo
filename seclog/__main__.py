@@ -3,7 +3,7 @@ import argparse
 from .config import parse_config
 from .detectors import get_detectors, run_detectors
 from .output import to_json, to_table
-from .parser import parse_file
+from .parser import parse_logfile
 
 
 def main():
@@ -15,7 +15,7 @@ def main():
     args = ap.parse_args()
 
     config = parse_config(args.config)
-    events = parse_file(args.logfile)
+    events = parse_logfile(args.logfile)
     detectors = get_detectors(config)
     findings = run_detectors(events, detectors)
 

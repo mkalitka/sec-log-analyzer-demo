@@ -1,3 +1,7 @@
+# This config file contains default settings.
+# You can override any of these settings.
+# You're free to leave just the ones you want to change.
+
 brute_force:
   enabled: true
   threshold: 3          # Number of failed attempts before triggering an alert
@@ -18,5 +22,5 @@ unusual_access:
     - /var/log/auth.log
     - /root/.bashrc
     - /admin/panel
-  trusted_ips:         # IPs to exclude from detection
+  trusted_ips:          # IPs to exclude from detection
     - 127.0.0.1
